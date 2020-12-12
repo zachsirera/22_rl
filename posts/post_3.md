@@ -12,5 +12,9 @@ All of this leaves us with a decision matrix of the following size: There will b
 
 ## Second, let's discuss Reinforcement Learning
 
-TODO
+Simply put, Reinforcement Learning is a framework that allows an agent to iteratively traverse some sort of state space and assign value to the states and actions in the state space that led to a positive outcome as well as assign blame to those states and actions that led to a negative outcome. In the context of this problem, the states in the state space represent the current play that the agent has to consider and the actions represent the current options available to the agent as it tries to formulate a play in response to the current state. Some Reinforcement Learning algorithms treat problems as Markov Decision Processes (MDPs) where it is theoretically possible to determine an optimal action in all states that maximizes the long-term value of the agent. However, an interesting twist comes with a game of imperfect information like 22. 
+
+When an agent returns a play it creates a new state for its opponent, however, it has no way to determine what will be the next state it sees at the time that it is deciding on its action. There are various Reinforcement Learning algorithms that are designed to be applied to these sorts of games. Initially I will attempt to apply Q Learning to this problem and observe the outcome as the agent trains. 
+
+Other approaches that may be beneficial are to do something like use a neural network to for function approximation to group states together. This might allow the agent to be more situationally aware in its strategy, rather than applying the same strategy at each state, the agent can consider other aspects of the game. Aspects like the agents score, the highest of its opponents scores, the number of cards remaining in its hand, and the number of players in the game are all factors which could be exploited strategically but any of the above would increase the problem space to an intractable size for the context of this project. 
 
