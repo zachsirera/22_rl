@@ -7,13 +7,14 @@ class Player:
 	this is a class to handle all of the instance variables for a player
 	'''
 
-	def __init__(self, index):
+	def __init__(self, index, random_play=False):
 		self.score = 0
 		self.hand = []
 		self.index = index
 		self.games_played = 0
 		self.losses = 0
 		self.decision_matrix = self.initialize_decision_matrix()
+		self.random_play = random_play
 
 
 
@@ -192,7 +193,15 @@ class Player:
 		'''
 
 		# right now it just randomly picks from those plays who have the max value
-		plays = [x for x in vals if x['value'] == max(vals, key=lambda x:x['value'])['value']]
+		if self.random_play == True:
+			# if an agent is playing randomly, just pick at random from the valid plays 
+			plays = vals
+		else:
+			# if an agent is playing 'intelligenty', apply a more sophisticated choise algorithm
+			# right now it picks the max value, but I will incorporate something resembling simmulated annealing so that agents can 
+			# explore the entire state space
+			plays = [x for x in vals if x['value'] == max(vals, key=lambda x:x['value'])['value']]
+
 
 		return random.choice(plays)
 
