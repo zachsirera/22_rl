@@ -14,3 +14,6 @@ It didn't take long after I started playing 22 to realize that I wanted to appro
 
 This project represents my attempt to apply Reinforcement Learning, specifically Model-Free Reinforcement Learning, to the card game 22 to attempt to elucidate an optimal strategy for all situations in the game. 
 
+[Post 2: Creating a framework for agents to play the game in an autonomous way.](https://github.com/zachsirera/22_rl/blob/main/posts/post_2.md)
+
+

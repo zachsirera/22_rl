@@ -35,6 +35,6 @@ However, the initial version of 22_rl will be playing a simplified version of th
 
 Here is a basic class layout showing how the various classes in the game interface with one another. This is not meant to be all-encompassing, but to just give a rough idea of what is happening under the hood during a game or series of games. 
 
-
+[Post 3: Establishing this as a RL problem](https://github.com/zachsirera/22_rl/blob/main/posts/post_3.md)
 
 
