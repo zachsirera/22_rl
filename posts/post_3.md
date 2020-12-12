@@ -1,0 +1,16 @@
+# 22_rl: Establishing this as a RL problem
+
+## First, let's discuss problem size. 
+
+Since suits don't matter and we are eliminating four of a kinds, there are a total of 13 * 3 possible distinct plays the leader can make. It's important to clarify, in a normal game of cards, for example, there are 6 different ways to have a pair (4 choose 2). However, the agent doesn't have a need to distinguish between different pairs of the same value, so there is only one pair of eights that matters in the problem state space. So, the 39 plays include one of a kind of each card, two of a kind, and three of a kind. 
+
+However, agents need to be prepared to respond to plays that are more than just pairs or three of a kind. At some point in the game an agent is going to need to consider its state space as responding to two or even three different cards. Likewise, the agent needs to consider its actions as responding to one, two, or three cards and the response doesn't require that the agent play similar cards. This requires 13 + 13 ^ 2 + 13 ^ 3 possible plays and actions that the agent needs to consider. Additionally, the agent may want to consider its score versus the highest of its opponents scores when trying to determine the optimal action. This makes intuitive sense. A person playing 22 might choose to play their hand a little differently if their opponent has 20 or 21 points left and they have none, and vice versa. There are 21 possible scores an agent can have in a game, 0, 2, 3, ... 21 (there is no one in the game, so an agent can never attain a score of one). So an agent that considers its own score as well as the highest of its opponents' score increases its state-space by a factor of 21 ^ 2, or 441. However, this becomes far too many states to keep track of. If all of these numbers were ints, it would require almost a gigabyte of memory just to store them. And I suspect that the agents strategy won't strongly depend on relative score except for at certain extremes where the agent or its opponent is very close to losing. 
+
+A section of the decision matrix needs to also be allocated for the states where the agent leads. This section could factor in the scores of the agents playing the game, but again I think this is more trouble than it is worth. A single row in the decision matrix representing a lead will likely be sufficient to understand the surface of the game. 
+
+All of this leaves us with a decision matrix of the following size: There will be 13 rows representing the current play of a single card, 13 ^ 2 rows for two cards, and 13 ^ 3 rows for three cards, and one row for the lead. There will be the same number of columns, except there is no need to the additional lead column. This leaves the agent with a decision matrix of 2380 rows and 2379 columns, for a total of 5.7 million state-action pairs. After a certain number of games it is likely that a lot of these elements in the decision matrix will not be accessed because the agent will only rarely get to lead a three of a kind and thus an agent will rarely get to play in response. So it is possible that the decision matrix will converge on an optimal strategy with relatively few games played. 
+
+## Second, let's discuss Reinforcement Learning
+
+   
+
