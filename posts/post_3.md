@@ -18,3 +18,4 @@ When an agent returns a play it creates a new state for its opponent, however, i
 
 Other approaches that may be beneficial are to do something like use a neural network to for function approximation to group states together. This might allow the agent to be more situationally aware in its strategy, rather than applying the same strategy at each state, the agent can consider other aspects of the game. Aspects like the agents score, the highest of its opponents scores, the number of cards remaining in its hand, and the number of players in the game are all factors which could be exploited strategically but any of the above would increase the problem space to an intractable size for the context of this project. 
 
+[Post 4: Q Learning](https://github.com/zachsirera/22_rl/blob/main/posts/post_4.ipynb)

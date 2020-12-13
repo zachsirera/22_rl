@@ -16,7 +16,7 @@ class Game:
 		self.players = players
 		self.n_players = len(self.players)
 		self.n_cards = n_cards
-		self.loser = None
+		self.loser = []
 		self.leader = 0
 
 
@@ -32,8 +32,12 @@ class Game:
 			self.n_cards = n_cards
 
 		self.assign_loss()
-		self.reset_game()
 		
+		for player in self.players:
+			player.q_learn(player.states, player.index in self.loser, self.n_players)
+			player.states = []
+		
+		self.reset_game()
 			
 
 
@@ -86,6 +90,7 @@ class Game:
 
 		for player in self.players:
 			if player.score >= 22:
+				self.loser.append(player.index)
 				player.add_loss()
 
 
@@ -97,6 +102,8 @@ class Game:
 		for player in self.players:
 			player.add_game()
 			player.score = 0
+			self.loser = []
+			self.leader = 0
 
 
 

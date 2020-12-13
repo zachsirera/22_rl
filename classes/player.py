@@ -15,6 +15,9 @@ class Player:
 		self.losses = 0
 		self.decision_matrix = self.initialize_decision_matrix()
 		self.random_play = random_play
+		self.states = []
+		# states at the moment is all of the states from the beginning of the game to the end. 
+		# will evaluate changing it to a round-basis to see if that improves performance
 
 
 
@@ -24,6 +27,7 @@ class Player:
 		'''
 		self.hand = sorted(hand, key=lambda x: x.value, reverse=False)
 		return 
+
 
 
 
@@ -48,10 +52,13 @@ class Player:
 				if i < (max_play):
 					play = [card] * (i + 1)
 					col_ind = self.decision_map_col(play)
-					vals.append({'play': play, 'value': self.decision_matrix[row_ind][col_ind]})
+					vals.append({'play': play, 'value': self.decision_matrix[row_ind][col_ind], 'state': (row_ind, col_ind)})
 
 		# call the pick function to pick the play based on the values in the decision matrix
 		chosen_play = self.pick(vals)
+
+		# retain the state chosen for the Q Learning algorithm
+		self.states.append(chosen_play['state'])
 
 		# here is where it gets a little nasty... taking the play choice and reconstructing it as a list of Card objects and removing that from the hand
 		count = len(chosen_play['play'])
@@ -106,10 +113,13 @@ class Player:
 		for index, option in enumerate(valid_options):
 			play = [x.ind for x in option]
 			col_ind = self.decision_map_col(play)
-			vals[index] = {'play': play, 'value': self.decision_matrix[row_ind][col_ind]}
+			vals[index] = {'play': play, 'value': self.decision_matrix[row_ind][col_ind], 'state': (row_ind, col_ind)}
 
 		# call the pick function to pick the play based on the values in the decision matrix
 		chosen_play = self.pick(vals)
+
+		# retain the state chosen for the Q Learning algorithm
+		self.states.append(chosen_play['state'])
 
 		# here is where it gets a little nasty... taking the play choice and reconstructing it as a list of Card objects and removing that from the hand
 		card_inds = []
@@ -232,4 +242,45 @@ class Player:
 		'''
 
 		self.losses += 1
+
+
+
+	def q_learn(self, states, outcome, n_players, learning_rate=0.1, discount_factor=0.95): 
+		'''
+		function to apply the Q Learning algorithm to the problem. 
+		information can be found here: https://en.wikipedia.org/wiki/Q-learning 
+		'''
+
+		# traverse states in reverse to apply the discount factor
+		for i, state in enumerate(states[::-1]):
+			q_old = self.decision_matrix[state[0]][state[1]]
+
+			if i == 0:
+				if outcome: # outcome == True represents a win, False a loss.
+					reward = 10 / (n_players - 1)
+				else:
+					reward = -10
+			else:
+				reward = 0
+
+			q_max = -10
+
+			for row in self.decision_matrix[:182]:
+				# get the lead, 1 card plays, and 2 card plays. 1 + 13 + 169 rows. 
+				for val in row[:182]:
+					if val > q_max:
+						q_max = val 
+
+			# update decision matrix with new Q value
+			self.decision_matrix[state[0]][state[1]] = q_old + learning_rate * (reward + discount_factor * q_max - q_old)
+			
+		
+				
+		
+
+
+
+
+
+
 
