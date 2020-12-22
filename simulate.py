@@ -78,13 +78,13 @@ def game_exp(n_players, log_filename, matrix_filename):
 if __name__ == '__main__':
 
 	# experiment 1: three players, learn based on game outcomes only
-	game_exp(3, 'logs/3p_games.txt', 'matrices/3p_games.csv')
+	# game_exp(3, 'logs/3p_games.txt', 'matrices/3p_games.csv')
 
 	# # experiment 2: two players, learn based on game outcomes only
 	# game_exp(2, 'logs/2p_games.txt', 'matrices/2p_games.csv')
 
 	# # experiment 3: four players, learn based on game outcomes only
-	# game_exp(4, 'logs/4p_games.txt', 'matrices/4p_games.csv')
+	game_exp(4, 'logs/4p_games.txt', 'matrices/4p_games.csv')
 
 
 

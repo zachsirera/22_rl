@@ -12,3 +12,5 @@ I have completed this project in a pseudo-blog format with multiple posts as I p
 [Post 4: Q Learning](https://github.com/zachsirera/22_rl/blob/main/posts/post_4.ipynb)
 
 [Post 5: Initial Experimentation](https://github.com/zachsirera/22_rl/blob/main/posts/post_5.ipynb)
+
+[Post 6: In-depth Experimentation](https://github.com/zachsirera/22_rl/blob/main/posts/post_6.ipynb)
