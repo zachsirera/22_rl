@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt 
 import csv
+from typing import List
 
 
 
@@ -114,15 +115,88 @@ def plot_learning_curve(filename, n_players, n_games):
 	plt.ylabel("Success Rate")
 	plt.xlabel("Training Games Played")
 	plt.tight_layout()
-	plt.show()
+	# plt.show()
+	plt.savefig('figures/lc_' + str(n_players) + 'p_' + str(n_games) + '.png')
+	plt.clf()
+
+
+def combined_decision_matrix(filenames: List, n_games):
+	''' 
+	function to present multiple decision matrix visualizations on the same line. 
+
+	params: 
+		filenames:  list of file names that contain the decision matrices of the agents, sorted by number of players in ascending order: 2, 3, 4. 
+		n_games: 	int representing the number of trained self-play games that an agent trained over
+	'''
+
+	# get limits for the areas in the decision matrix that correspond to the play 
+	limits = [{'col_start': 0, 'col_end': 13, 'row_start': 1, 'row_end': 13}, 
+	{'col_start': 14, 'col_end': 183, 'row_start': 15, 'row_end': 184}, 
+	{'col_start': 184, 'col_end': 2379, 'row_start': 185, 'row_end': 2380}]
+
+	# for plotting purposes
+	faces = ["2", "3", "4", "5", "6", "7", "8", "9", "10","J", "Q", "K", "A"]
+
+	# map j to number of players
+	players = ['Two Players', 'Three Players', 'Four Players']
+
+	# map i to number of cards
+	cards = ['One Card', 'Two Cards', 'Three Cards']
+
+	for i in range(len(limits)):
+		for j, filename in enumerate(filenames):
+			card_subset = []
+
+			with open(filename, 'r', newline='') as csvfile:
+				csv_reader = csv.reader(csvfile, delimiter=',', quoting=csv.QUOTE_NONNUMERIC)
+
+				for index, row in enumerate(csv_reader):
+					if limits[i]['row_start'] <= index <= limits[i]['row_end']:
+						card_subset.append(row[limits[i]['col_start']: limits[i]['col_end']])
+
+			# plot the heat map for 1 card plays
+			plt.subplot(1, 3, j + 1)
+			plt.imshow(card_subset)
+			plt.title(str(players[j]))
+			plt.xlabel("My move")
+			plt.xticks([k * 13 ** i for k in range(13)], faces)
+			if j == 0:
+				plt.ylabel("Their move")
+				plt.yticks([k * 13 ** i for k in range(13)], faces)
+			else:
+				plt.yticks([], [])
+
+		# plt.suptitle(str(cards[i]) + ", " + str(n_games) + " Games, Self-play")
+		# plt.subplots_adjust(top=1.5)
+		# plt.figure(figsize=(5, 2.5))
+		plt.tight_layout()
+		plt.savefig('figures/combined_dm_' + str(i + 1) + 'c_' + str(n_games) + '.png')
+		plt.clf()
+		# plt.show()
+
 
 
 
 
 
 if __name__ == '__main__':
+	# 3-player games 
 	# visualize_decision_matrix('matrices/3p_games.csv', 3, 1000000)
 	plot_learning_curve('logs/3p_games.txt', 3, 1000000)
+
+	# 4-player games
+	# visualize_decision_matrix('matrices/4p_games.csv', 4, 1000000)
+	# plot_learning_curve('logs/4p_games.txt', 4, 1000000)
+
+	# 2-player games
+	# visualize_decision_matrix('matrices/2p_games.csv', 2, 1000000)
+	# plot_learning_curve('logs/2p_games.txt', 2, 1000000)
+
+	# generate combined decision matrix graphic
+	# combined_decision_matrix(['matrices/2p_games.csv', 'matrices/3p_games.csv', 'matrices/4p_games.csv'], 1000000)
+	# combined_decision_matrix(['matrices/2p_games.csv'], 1000000)
+
+
 
 
 
