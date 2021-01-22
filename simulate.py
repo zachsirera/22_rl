@@ -72,6 +72,23 @@ def game_exp(n_players, log_filename, matrix_filename):
 
 	return
 
+def round_exp(n_players, log_filename, matrix_filename):
+	'''
+	run any experiment that involves learning based on the outcome of each round and the score the player "takes home"
+	'''
+
+	# all games start with 7 cards 
+	n_cards = 7
+
+	learners = [Player(j, random_play=False) for j in range(n_players)]
+	rand_players = [learners[0]] + [Player(i, rand_play=True) for j in range(1, n_players)]
+
+	# run 1,000,000 rounds but stop every 10,000 to check the agent's win percentage against random agent(s)
+
+	#### TODO 
+	# probably need to start with a round.play_single() method similar to game.play()
+	# important note: training can be done just by playing rounds, agent will be tested by using this information to 
+	# play games. 
 
 
 
@@ -84,7 +101,10 @@ if __name__ == '__main__':
 	# game_exp(2, 'logs/2p_games.txt', 'matrices/2p_games.csv')
 
 	# # experiment 3: four players, learn based on game outcomes only
-	game_exp(4, 'logs/4p_games.txt', 'matrices/4p_games.csv')
+	# game_exp(4, 'logs/4p_games.txt', 'matrices/4p_games.csv')
+
+	# experiment 4: two players, learn based on round scoring outcomes
+
 
 
 
